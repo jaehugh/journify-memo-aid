@@ -6,7 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
-import Dashboard from "./pages/Home";
+import Home from "./pages/Home";
 import Insights from "./pages/Insights";
 import Search from "./pages/Search";
 import Profile from "./pages/Profile";
@@ -59,7 +59,7 @@ const App = () => {
             />
             <Route 
               path="/dashboard" 
-              element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} 
+              element={isAuthenticated ? <Home /> : <Navigate to="/" />} 
             />
             <Route 
               path="/insights" 
@@ -71,7 +71,7 @@ const App = () => {
             />
             <Route 
               path="/new" 
-              element={isAuthenticated ? <Dashboard /> : <Navigate to="/" />} 
+              element={isAuthenticated ? <Home /> : <Navigate to="/" />} 
             />
             <Route 
               path="/profile" 
