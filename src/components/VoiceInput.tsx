@@ -6,21 +6,29 @@ interface VoiceInputProps {
   onTranscript: (transcript: string) => void;
 }
 
+// Define the SpeechRecognition types
+interface IWindow extends Window {
+  webkitSpeechRecognition: any;
+  SpeechRecognition: any;
+}
+
 export const VoiceInput: React.FC<VoiceInputProps> = ({ onTranscript }) => {
   const [isRecording, setIsRecording] = useState(false);
-  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+  const [recognition, setRecognition] = useState<any>(null);
 
   const startRecording = () => {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const windowWithSpeech = window as IWindow;
+    const SpeechRecognition = windowWithSpeech.SpeechRecognition || windowWithSpeech.webkitSpeechRecognition;
+    
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
       recognition.continuous = true;
       recognition.interimResults = true;
 
-      recognition.onresult = (event) => {
+      recognition.onresult = (event: any) => {
         const transcript = Array.from(event.results)
-          .map((result) => result[0])
-          .map((result) => result.transcript)
+          .map((result: any) => result[0])
+          .map((result: any) => result.transcript)
           .join("");
         onTranscript(transcript);
       };
