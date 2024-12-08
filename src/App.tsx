@@ -48,10 +48,6 @@ const App = () => {
     );
   }
 
-  if (isAuthenticated === null) {
-    return null;
-  }
-
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -61,27 +57,63 @@ const App = () => {
           <Routes>
             <Route 
               path="/" 
-              element={isAuthenticated ? <Navigate to="/home" replace /> : <Index />} 
+              element={
+                isAuthenticated ? (
+                  <Navigate to="/home" replace />
+                ) : (
+                  <Index />
+                )
+              } 
             />
             <Route 
               path="/home" 
-              element={isAuthenticated ? <Home /> : <Navigate to="/" replace />} 
+              element={
+                !isAuthenticated ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Home />
+                )
+              } 
             />
             <Route 
               path="/insights" 
-              element={isAuthenticated ? <Insights /> : <Navigate to="/" replace />} 
+              element={
+                !isAuthenticated ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Insights />
+                )
+              } 
             />
             <Route 
               path="/search" 
-              element={isAuthenticated ? <Search /> : <Navigate to="/" replace />} 
+              element={
+                !isAuthenticated ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Search />
+                )
+              } 
             />
             <Route 
               path="/new" 
-              element={isAuthenticated ? <Home /> : <Navigate to="/" replace />} 
+              element={
+                !isAuthenticated ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Home />
+                )
+              } 
             />
             <Route 
               path="/profile" 
-              element={isAuthenticated ? <Profile /> : <Navigate to="/" replace />} 
+              element={
+                !isAuthenticated ? (
+                  <Navigate to="/" replace />
+                ) : (
+                  <Profile />
+                )
+              } 
             />
           </Routes>
         </BrowserRouter>
