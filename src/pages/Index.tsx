@@ -56,6 +56,7 @@ const Index = () => {
               },
             }}
             providers={[]}
+            view="sign_in"
           />
         </div>
       </div>
