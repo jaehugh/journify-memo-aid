@@ -1,7 +1,10 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+const supabaseUrl = Deno.env.get('SUPABASE_URL');
+const supabaseServiceRoleKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -14,6 +17,31 @@ serve(async (req) => {
   }
 
   try {
+    // Get the authorization header
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      throw new Error('No authorization header');
+    }
+
+    // Create a Supabase client with the service role key
+    const supabase = createClient(supabaseUrl!, supabaseServiceRoleKey!);
+    
+    // Get the user from the JWT
+    const { data: { user }, error: userError } = await supabase.auth.getUser(authHeader.replace('Bearer ', ''));
+    
+    if (userError || !user) {
+      throw new Error('Invalid user token');
+    }
+
+    // Check if user has premium access
+    const { data: hasPremium, error: premiumError } = await supabase.rpc('has_premium_access', {
+      user_id: user.id
+    });
+
+    if (premiumError || !hasPremium) {
+      throw new Error('Premium access required');
+    }
+
     const { prompt } = await req.json();
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {

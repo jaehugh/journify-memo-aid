@@ -5,18 +5,27 @@ import { JournalEntry } from "@/components/JournalEntry";
 import { Search as SearchIcon } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery } from "@tanstack/react-query";
-
-interface SearchResult {
-  id: string;
-  title: string;
-  content: string;
-  tags: string[];
-  created_at: string;
-}
+import { useToast } from "@/components/ui/use-toast";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [isAISearching, setIsAISearching] = useState(false);
+  const { toast } = useToast();
+
+  const { data: hasPremiumAccess } = useQuery({
+    queryKey: ["premium-access"],
+    queryFn: async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return false;
+      
+      const { data, error } = await supabase.rpc('has_premium_access', {
+        user_id: user.id
+      });
+      
+      if (error) throw error;
+      return data;
+    }
+  });
 
   const { data: searchResults, isLoading } = useQuery({
     queryKey: ["search", searchQuery],
@@ -32,9 +41,9 @@ const Search = () => {
 
       if (directError) throw directError;
 
-      // If the query is more than 3 words, use AI to find semantic matches
+      // If the query is more than 3 words and user has premium access, use AI
       const words = searchQuery.trim().split(/\s+/);
-      if (words.length > 2) {
+      if (words.length > 2 && hasPremiumAccess) {
         setIsAISearching(true);
         try {
           const aiResponse = await fetch("/api/generate-with-ai", {
@@ -46,15 +55,24 @@ const Search = () => {
           });
 
           const aiData = await aiResponse.json();
-          // Combine AI results with direct matches
-          const combinedResults = [...directMatches];
           setIsAISearching(false);
-          return combinedResults;
+          return [...directMatches, ...(aiData.results || [])];
         } catch (error) {
           console.error("AI search error:", error);
           setIsAISearching(false);
+          toast({
+            title: "AI Search Failed",
+            description: "Please try again or use regular search",
+            variant: "destructive",
+          });
           return directMatches;
         }
+      } else if (words.length > 2 && !hasPremiumAccess) {
+        toast({
+          title: "Premium Feature",
+          description: "AI-powered search is only available for premium users",
+          variant: "default",
+        });
       }
 
       return directMatches;

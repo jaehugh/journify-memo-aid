@@ -19,9 +19,14 @@ const App = () => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      setIsAuthenticated(!!session);
-      setIsLoading(false);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        setIsAuthenticated(!!session);
+      } catch (error) {
+        console.error("Error checking auth:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
@@ -48,12 +53,30 @@ const App = () => {
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/insights" element={<Insights />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/new" element={<Navigate to="/" />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route 
+              path="/" 
+              element={isAuthenticated ? <Navigate to="/home" /> : <Index />} 
+            />
+            <Route 
+              path="/home" 
+              element={isAuthenticated ? <Home /> : <Navigate to="/" />} 
+            />
+            <Route 
+              path="/insights" 
+              element={isAuthenticated ? <Insights /> : <Navigate to="/" />} 
+            />
+            <Route 
+              path="/search" 
+              element={isAuthenticated ? <Search /> : <Navigate to="/" />} 
+            />
+            <Route 
+              path="/new" 
+              element={isAuthenticated ? <Home /> : <Navigate to="/" />} 
+            />
+            <Route 
+              path="/profile" 
+              element={isAuthenticated ? <Profile /> : <Navigate to="/" />} 
+            />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
