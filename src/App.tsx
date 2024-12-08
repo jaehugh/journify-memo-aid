@@ -15,15 +15,17 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
+        console.log("Initial session check:", !!session);
         setIsAuthenticated(!!session);
       } catch (error) {
         console.error("Error checking auth:", error);
+        setIsAuthenticated(false);
       } finally {
         setIsLoading(false);
       }
@@ -44,6 +46,10 @@ const App = () => {
         <div className="animate-pulse text-foreground">Loading...</div>
       </div>
     );
+  }
+
+  if (isAuthenticated === null) {
+    return null;
   }
 
   return (
