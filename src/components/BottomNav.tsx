@@ -1,4 +1,4 @@
-import { Home, LineChart, Plus, User } from "lucide-react";
+import { Home, LineChart, Plus, Search, User } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export const BottomNav = () => {
@@ -30,6 +30,14 @@ export const BottomNav = () => {
           className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg hover:bg-primary/90 transition-colors"
         >
           <Plus className="w-6 h-6" />
+        </Link>
+        <Link
+          to="/search"
+          className={`p-2 rounded-lg transition-colors ${
+            isActive("/search") ? "text-primary" : "text-muted-foreground"
+          }`}
+        >
+          <Search className="w-6 h-6" />
         </Link>
         <Link
           to="/profile"
