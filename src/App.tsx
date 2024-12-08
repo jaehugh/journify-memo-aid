@@ -30,8 +30,8 @@ const App = () => {
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      console.log("Auth state changed:", _event, !!session);
       setIsAuthenticated(!!session);
-      setIsLoading(false);
     });
 
     checkAuth();
@@ -55,27 +55,27 @@ const App = () => {
           <Routes>
             <Route 
               path="/" 
-              element={isAuthenticated ? <Navigate to="/home" /> : <Index />} 
+              element={isAuthenticated ? <Navigate to="/home" replace /> : <Index />} 
             />
             <Route 
               path="/home" 
-              element={isAuthenticated ? <Home /> : <Navigate to="/" />} 
+              element={isAuthenticated ? <Home /> : <Navigate to="/" replace />} 
             />
             <Route 
               path="/insights" 
-              element={isAuthenticated ? <Insights /> : <Navigate to="/" />} 
+              element={isAuthenticated ? <Insights /> : <Navigate to="/" replace />} 
             />
             <Route 
               path="/search" 
-              element={isAuthenticated ? <Search /> : <Navigate to="/" />} 
+              element={isAuthenticated ? <Search /> : <Navigate to="/" replace />} 
             />
             <Route 
               path="/new" 
-              element={isAuthenticated ? <Home /> : <Navigate to="/" />} 
+              element={isAuthenticated ? <Home /> : <Navigate to="/" replace />} 
             />
             <Route 
               path="/profile" 
-              element={isAuthenticated ? <Profile /> : <Navigate to="/" />} 
+              element={isAuthenticated ? <Profile /> : <Navigate to="/" replace />} 
             />
           </Routes>
         </BrowserRouter>
