@@ -25,7 +25,10 @@ serve(async (req) => {
       body: JSON.stringify({
         model: 'gpt-4o-mini',
         messages: [
-          { role: 'system', content: 'You are a helpful AI assistant for a journaling app. You help analyze journal entries and provide insights.' },
+          { 
+            role: 'system', 
+            content: 'You are an AI assistant helping to search through journal entries. Analyze the search query and help find relevant entries based on semantic meaning.'
+          },
           { role: 'user', content: prompt }
         ],
       }),
