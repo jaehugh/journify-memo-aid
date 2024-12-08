@@ -12,13 +12,19 @@ interface IWindow extends Window {
   SpeechRecognition: any;
 }
 
+declare global {
+  interface Window {
+    webkitSpeechRecognition: any;
+    SpeechRecognition: any;
+  }
+}
+
 export const VoiceInput: React.FC<VoiceInputProps> = ({ onTranscript }) => {
   const [isRecording, setIsRecording] = useState(false);
   const [recognition, setRecognition] = useState<any>(null);
 
   const startRecording = () => {
-    const windowWithSpeech = window as IWindow;
-    const SpeechRecognition = windowWithSpeech.SpeechRecognition || windowWithSpeech.webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
