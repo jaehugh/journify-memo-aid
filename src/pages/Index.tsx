@@ -18,11 +18,15 @@ const Index = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-secondary/20 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-dark flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-sm space-y-8 animate-fade-up">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Journiq</h1>
-          <p className="text-muted-foreground">Your AI-powered journaling companion</p>
+          <img 
+            src="/lovable-uploads/4467a08f-217f-4849-9986-2d10a9c97077.png" 
+            alt="Journiq Logo" 
+            className="h-16 mx-auto mb-4"
+          />
+          <p className="text-muted">Your AI-powered journaling companion</p>
         </div>
         
         <div className="bg-card/80 backdrop-blur-sm p-6 rounded-lg shadow-sm">
@@ -33,8 +37,8 @@ const Index = () => {
               variables: {
                 default: {
                   colors: {
-                    brand: '#8DA290',
-                    brandAccent: '#7A8F7D',
+                    brand: '#2C405E',
+                    brandAccent: '#4A90E2',
                   },
                 },
               },

@@ -22,28 +22,31 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "#1A2B4C", // Deep Navy
+        foreground: "#E5E7E9", // Platinum Silver
         primary: {
-          DEFAULT: "#8DA290",
-          foreground: "#FFFFFF",
+          DEFAULT: "#2C405E", // Circuit Blue
+          foreground: "#E5E7E9", // Platinum Silver
         },
         secondary: {
-          DEFAULT: "#F5F5F5",
-          foreground: "#2C3639",
+          DEFAULT: "#8A9199", // Tech Gray
+          foreground: "#E5E7E9", // Platinum Silver
         },
         accent: {
-          DEFAULT: "#D4B483",
-          foreground: "#2C3639",
+          DEFAULT: "#4A90E2", // Electric Blue
+          foreground: "#E5E7E9", // Platinum Silver
         },
         muted: {
-          DEFAULT: "#F8F9FA",
-          foreground: "#6C757D",
+          DEFAULT: "#C0C5CA", // Accent Silver
+          foreground: "#8A9199", // Tech Gray
         },
         card: {
-          DEFAULT: "rgba(255, 255, 255, 0.8)",
-          foreground: "#2C3639",
+          DEFAULT: "#F5F7F9", // Surface Light
+          foreground: "#1A2B4C", // Deep Navy
         },
+        success: "#2E7D6F", // Success Green
+        warning: "#E6B348", // Alert Amber
+        darkSlate: "#0F1824", // Dark Slate
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -73,6 +76,10 @@ export default {
       animation: {
         "fade-up": "fade-up 0.5s ease-out",
         "fade-in": "fade-in 0.3s ease-out",
+      },
+      backgroundImage: {
+        'gradient-dark': 'linear-gradient(135deg, #1A2B4C 0%, #0F1824 100%)',
+        'gradient-light': 'linear-gradient(135deg, #E5E7E9 0%, #C0C5CA 100%)',
       },
     },
   },
