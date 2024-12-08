@@ -15,13 +15,13 @@ const queryClient = new QueryClient();
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const { data: { session } } = await supabase.auth.getSession();
-        console.log("Initial session check:", !!session);
+        console.log("Initial session check:", session);
         setIsAuthenticated(!!session);
       } catch (error) {
         console.error("Error checking auth:", error);
@@ -32,8 +32,9 @@ const App = () => {
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log("Auth state changed:", _event, !!session);
+      console.log("Auth state changed:", _event, session);
       setIsAuthenticated(!!session);
+      setIsLoading(false);
     });
 
     checkAuth();
@@ -68,50 +69,50 @@ const App = () => {
             <Route 
               path="/home" 
               element={
-                !isAuthenticated ? (
-                  <Navigate to="/" replace />
-                ) : (
+                isAuthenticated ? (
                   <Home />
+                ) : (
+                  <Navigate to="/" replace />
                 )
               } 
             />
             <Route 
               path="/insights" 
               element={
-                !isAuthenticated ? (
-                  <Navigate to="/" replace />
-                ) : (
+                isAuthenticated ? (
                   <Insights />
+                ) : (
+                  <Navigate to="/" replace />
                 )
               } 
             />
             <Route 
               path="/search" 
               element={
-                !isAuthenticated ? (
-                  <Navigate to="/" replace />
-                ) : (
+                isAuthenticated ? (
                   <Search />
+                ) : (
+                  <Navigate to="/" replace />
                 )
               } 
             />
             <Route 
               path="/new" 
               element={
-                !isAuthenticated ? (
-                  <Navigate to="/" replace />
-                ) : (
+                isAuthenticated ? (
                   <Home />
+                ) : (
+                  <Navigate to="/" replace />
                 )
               } 
             />
             <Route 
               path="/profile" 
               element={
-                !isAuthenticated ? (
-                  <Navigate to="/" replace />
-                ) : (
+                isAuthenticated ? (
                   <Profile />
+                ) : (
+                  <Navigate to="/" replace />
                 )
               } 
             />

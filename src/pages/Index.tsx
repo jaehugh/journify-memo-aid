@@ -9,21 +9,21 @@ const Index = () => {
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+      console.log("Index page auth state changed:", event, !!session);
+      if (session) {
         navigate("/home");
       }
     });
 
-    // Check for existing session on mount
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
+      console.log("Index page initial session check:", !!session);
       if (session) {
         navigate("/home");
       }
     };
     
     checkSession();
-
     return () => subscription.unsubscribe();
   }, [navigate]);
 
@@ -56,7 +56,6 @@ const Index = () => {
               },
             }}
             providers={[]}
-            view="sign_in"
           />
         </div>
       </div>
